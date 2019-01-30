@@ -1,6 +1,13 @@
-<form action = "<%= cat_url(@cat) %>" method = "post">
-  <%= cat_url(@cat)  %>
-  <input type="hidden" name="_method" value="patch">
+<% if type == :edit %>
+  <% action_url = cat_url(cat) %>
+<% else %>
+  <% action_url = cats_url %>
+<% end %>
+<form action = "<%= action_url %>" method = "post">
+
+  <% if cat.persisted? %>
+    <input type="hidden" name="_method" value="patch">
+  <% end %>
 
   <label for ="name"> Name:
     <input type = "text" name="cat[name]" value="<%= @cat.name %>" >
@@ -14,7 +21,9 @@
 
   <label for ="color"> Color:
     <select name="cat[color]" value="<%= @cat.color%>" >
-      <!-- <option disabled selected>-- Select a color --</option> -->
+      <% if !cat.persisted? %>
+        <option disabled selected>-- Select a color --</option>
+      <% end %>
       <% Cat::COLORS.each do |color| %>
         <option value="<%= color%>" <%= @cat.color == color ? "selected" : "" %> > <%= color%> </option> 
       <% end %>
@@ -33,5 +42,5 @@
   </label>
   <br>
 
-  <input type="submit" value="Edit Cat">
+  <input type="submit" value="<%= cat.persisted? ? "Edit" : "Create" %> Cat">
 </form>

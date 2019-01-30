@@ -17,6 +17,12 @@ class CatsController < ApplicationController
     @cat = Cat.find(params[:id])
   end
 
+  def destroy
+    cat = Cat.find(params[:id])
+    cat.destroy
+    render json: cat
+  end
+
   def new
     @cat = Cat.new
     render :new
